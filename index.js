@@ -1,18 +1,11 @@
-const http = require('http')
-
 const express = require('express')
+const cors = require('cors')
 const morgan = require('morgan')
-
 const app = express()
 
-const cors = require('cors')
-
+app.use(express.static('build'))
 app.use(cors())
 
-
-app.use(express.json())
-
-app.use(express.static('build'))
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info'))
 
@@ -20,7 +13,7 @@ morgan.token('info', (request) => {
   return JSON.stringify(request.body)
 })
 
-
+app.use(express.json())
 
 
 let persons = [
@@ -39,7 +32,6 @@ let persons = [
       name: "Esa Engblom",
       nro: "040701333"
     },
-
     {
       id: 4,
       name: "Muunis Engblom",
