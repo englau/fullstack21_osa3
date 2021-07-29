@@ -1,48 +1,47 @@
 const express = require('express')
-const cors = require('cors')
-const morgan = require('morgan')
 const app = express()
+const morgan = require('morgan')
+const cors = require('cors')
 
-app.use(express.static('build'))
+
 app.use(cors())
+app.use(express.static('build'))
 
+let persons = [
+  {
+    id: 1,
+    name: "Hilla Engblom",
+    number: "040333221"
+  },
+  {
+    id: 2,
+    name: "Laura Engblom",
+    number: "0400811111"
+  },
+  {
+    id: 3,
+    name: "Esa Engblom",
+    number: "040701333"
+  },
+  {
+    id: 4,
+    name: "Muunis Engblom",
+    number: "040701222"
+  },
+  {
+  id: 5,
+  name: "Pekka Pouta",
+  number: "050666777"
+  }
+]
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info'))
+app.use(express.json())
 
 morgan.token('info', (request) => {
   return JSON.stringify(request.body)
 })
 
-app.use(express.json())
-
-
-let persons = [
-    {
-      id: 1,
-      name: "Hilla Engblom",
-      nro: "040333221"
-    },
-    {
-      id: 2,
-      name: "Laura Engblom",
-      nro: "0400811111"
-    },
-    {
-      id: 3,
-      name: "Esa Engblom",
-      nro: "040701333"
-    },
-    {
-      id: 4,
-      name: "Muunis Engblom",
-      nro: "040701222"
-    },
-    {
-    id: 5,
-    name: "Pekka Pouta",
-    nro: "050666777"
-    }
-  ]
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info'))
 
 
 
@@ -89,7 +88,7 @@ app.post('/api/persons', (request, response) => {
   
   const body = request.body
 
-  if (!body.name || !body.nro) {
+  if (!body.name || !body.number) {
     return response.status(400).json({ 
       error: 'name or number missing' 
     })
@@ -98,13 +97,13 @@ app.post('/api/persons', (request, response) => {
   const person = {
     id: getRandomId(),
     name: body.name,
-    nro: body.nro
+    number: body.number,
   }
 
-  if (persons.find(person => body.name === person.name)) {
+  if (persons.find(p => p.name === body.name)) {
    return response.status(400).json({ 
-    error: 'name already exists'
-  })
+    error: 'name already exists'})
+  
 }
 
   persons = persons.concat(person)
