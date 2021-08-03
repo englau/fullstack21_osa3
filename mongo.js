@@ -27,14 +27,14 @@ if (process.argv.length<4) {
   })
 } else {
 
-const person = new Person({
+  const person = new Person({
     name: name,
     number: number
-})
+  })
 
 
-person.save().then(response => {
-  console.log('person saved!')
-  mongoose.connection.close()
-})
+  person.save().then(response => {
+    console.log('person saved!')
+    mongoose.connection.close()
+  })
 }
